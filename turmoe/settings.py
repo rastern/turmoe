@@ -139,6 +139,19 @@ REST_FRAMEWORK = {
     'UNAUTHENTICATED_USER': None,
 }
 
+# Engine Settings
+# Values here override default and namespace level settings
+# All names must be prefixed with ENGINE_
 
-ENGINE_TURBO_BASE_PATH = 'api/v2'
+# API Namespace to server
 ENGINE_NAMESPACE = 'classic'
+
+# Base Turbonomic API path to serve, note this may also be set by a namespace
+# itself in the config.py file.
+#ENGINE_TURBO_BASE_PATH = 'api/v3'
+
+# Dynamic URLs
+# Because django scans the URL list upwards of seven or more times during
+# request processing, dynamic URLs should generally be set to false.
+# It may be useful while building an initial namespace though.
+#ENGINE_TURBO_DYNAMIC_URLS = True
