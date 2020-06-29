@@ -10,8 +10,8 @@ class UrlPatternUpdateMiddleware:
     def __call__(self, request):
         # Code to be executed for each request before
         # the view (and later middleware) are called.
-        if settings.TURBO_DYNAMIC_URLS and \
-        request.path.strip('/').startswith(settings.TURBO_BASE_PATH):
+        if settings.API_DYNAMIC_URLS and \
+        request.path.strip('/').startswith(settings.API_BASE_PATH):
             request.urlconf = 'engine.urls'
 
         response = self.get_response(request)

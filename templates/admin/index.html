@@ -1,0 +1,18 @@
+{% extends "admin/index.html" %}
+
+{% block sidebar %}
+  {{ block.super }}
+
+  {% if view_list %}
+  <div class="module" style="float: left; width: 498px">
+    <table style="width: 100%">
+      <caption>{{ section_title }}</caption>
+      <tbody>
+        {% for path, name in view_list %}
+          <tr><th><a href="{{ path }}">{{ name }}</a></th></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+{% endblock %}

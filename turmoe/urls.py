@@ -18,12 +18,13 @@ from django.contrib import admin
 from django.urls import include, path
 import debug_toolbar
 from engine import settings as engine_settings
+from engine import views as engine_views
 
 
 
 urlpatterns = [
     # create our collection base url to mock Turbo
-    path(engine_settings.TURBO_BASE_PATH, include('engine.urls')),
+    path('', include('engine.urls')),
 
     path('admin/', admin.site.urls),
 ]

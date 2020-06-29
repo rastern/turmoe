@@ -31,10 +31,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    #'adminplus.apps.AdminConfig',
     'engine.apps.EngineConfig',
-    'rest_framework',
     'debug_toolbar',
     'django.contrib.admin',
+    #'django.contrib.admin.apps.SimpleAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -59,7 +60,7 @@ ROOT_URLCONF = 'turmoe.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,7 +85,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -133,25 +133,23 @@ INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [],
-    'DEFAULT_PERMISSION_CLASSES': [],
-    'UNAUTHENTICATED_USER': None,
-}
-
 # Engine Settings
 # Values here override default and namespace level settings
-# All names must be prefixed with ENGINE_
+# All engine settings must be prefixed with ENGINE_ in this file
+#ENGINE_BASE_DIR = 'namespaces'
 
-# API Namespace to server
+# REQUIRED - API Namespace to server
 ENGINE_NAMESPACE = 'classic'
+
+ENGINE_MESSAGE_DEBUG = True
 
 # Base Turbonomic API path to serve, note this may also be set by a namespace
 # itself in the config.py file.
-#ENGINE_TURBO_BASE_PATH = 'api/v3'
+#ENGINE_API_BASE_PATH = 'api/v2'
+#ENGINE_API_DEFAULT_CONTENT_TYPE = ''
 
 # Dynamic URLs
 # Because django scans the URL list upwards of seven or more times during
 # request processing, dynamic URLs should generally be set to false.
 # It may be useful while building an initial namespace though.
-#ENGINE_TURBO_DYNAMIC_URLS = True
+#ENGINE_API_DYNAMIC_URLS = True

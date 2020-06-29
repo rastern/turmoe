@@ -1,11 +1,12 @@
 from collections.abc import Sequence
 
+
+
 class AutoList(Sequence):
     def __init__(self, func=None):
         super().__init__()
 
         self._generator = func
-
         self.__repopulate()
 
     def __getitem__(self, idx):
