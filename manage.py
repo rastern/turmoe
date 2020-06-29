@@ -6,6 +6,7 @@ import sys
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'turmoe.settings')
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -14,7 +15,24 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
+
+    if sys.argv[1] == 'runserver':
+        from engine import settings
+
+        # reset engine database on each run
+        print('Removing temporary tables from previous run')
+        execute_from_command_line([sys.argv[0], 'migrate', 'engine', 'zero'])
+
+        print('\nInitializing API engine database')
+        execute_from_command_line([sys.argv[0], 'migrate', 'engine'])
+        settings.update_settings_cache()
+
+        if '--noreload' not in sys.argv:
+            print('\nDisabling auto-reloader')
+            sys.argv.append('--noreload')
+
     execute_from_command_line(sys.argv)
+
 
 
 if __name__ == '__main__':
