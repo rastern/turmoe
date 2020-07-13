@@ -51,8 +51,6 @@ class StateModelAdmin(admin.ModelAdmin):
     list_editable = ['value']
     ordering = ['name']
 
-    #actions = None
-
     def has_delete_permission(self, request, obj=None):
         return True
 
