@@ -31,7 +31,7 @@ def path_trailing_slash(path, url=False):
 
 def resolve_namespace_config(workdir):
     try:
-        config = os.path.join(workdir, 'config.json')
+        config = os.path.join(workdir, 'namespace.json')
 
         if not os.path.isfile(config):
             config = 'namespacedefault.json'

@@ -31,11 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    #'adminplus.apps.AdminConfig',
     'engine.apps.EngineConfig',
     'debug_toolbar',
     'django.contrib.admin',
-    #'django.contrib.admin.apps.SimpleAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -136,12 +134,17 @@ INTERNAL_IPS = [
 # Engine Settings
 # Values here override default and namespace level settings
 # All engine settings must be prefixed with ENGINE_ in this file
+
+# Base folder within which namespaces are to be found
 #ENGINE_BASE_DIR = 'namespaces'
 
 # REQUIRED - API Namespace to server
 ENGINE_NAMESPACE = 'classic'
 
-ENGINE_MESSAGE_DEBUG = True
+# Debug mode for message resolution provides the comparaison failure code for
+# each message. This can generate a lot of output if you have a large namespace
+# and so is disabled by default. Use this if having trouble writing resource files.
+#ENGINE_MESSAGE_DEBUG = True
 
 # Base Turbonomic API path to serve, note this may also be set by a namespace
 # itself in the config.py file.
