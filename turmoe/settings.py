@@ -26,7 +26,7 @@ SECRET_KEY = '#f#=k9s%l#4gn*aq!z@@y#o8swyn#z)&8nebu%oh($fjqg)zx0'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+APPEND_SLASH = False
 
 # Application definition
 
@@ -46,7 +46,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -145,6 +145,10 @@ ENGINE_NAMESPACE = 'classic'
 # each message. This can generate a lot of output if you have a large namespace
 # and so is disabled by default. Use this if having trouble writing resource files.
 #ENGINE_MESSAGE_DEBUG = True
+
+# Verbosity setting for general engine behavior. Generates extra messaging for
+# engine operations.
+#ENGINE_VERBOSE = True
 
 # Base Turbonomic API path to serve, note this may also be set by a namespace
 # itself in the config.py file.

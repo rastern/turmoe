@@ -6,8 +6,9 @@ from django.conf import settings as site_settings
 from django.urls import include, path
 from engine import settings as engine_settings
 from engine import views as engine_views
-from engine.types import AutoList
 from engine.message import ResourceConfig
+from engine.types import AutoList
+from engine.settings import verbose
 
 
 
@@ -40,9 +41,11 @@ def urls():
                 engine_settings.MESSAGE_REPOSITORY.add(path_, file_path)
 
     for path_ in paths:
-        if path_[-1] != '/':
-                path_ += '/'
+        if path_[-1] == '/':
+            #path_ = path_[:-1]
+            path_ = path_.rstrip('/')
 
+        verbose(f"Appending path: {path_}")
         urls.append(path(path_, engine_views.MockResponseView.as_view()))
 
     if engine_settings.API_DYNAMIC_URLS and site_settings.DEBUG:
@@ -57,8 +60,10 @@ app_name = 'engine'
 
 if sys.argv[1] == 'runserver':
     if engine_settings.API_DYNAMIC_URLS:
+        verbose("Enabling dynamic URLs")
         urlpatterns = AutoList(urls)
     else:
+        verbose("Processing standard URLs")
         urlpatterns = urls()
 else:
     urlpatterns = ''

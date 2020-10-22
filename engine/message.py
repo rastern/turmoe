@@ -6,7 +6,8 @@ except ImportError:
     from yaml import Loader, Dumper
 
 import yaml
-from engine import settings
+
+from engine.state import get_state, update_state
 
 
 
@@ -61,11 +62,13 @@ class Resource:
         'method',
         'path',
         'state',
+        'options',
         '_eq_failure'
     ]
 
     def __init__(self, **kwargs):
         self._eq_failure = None
+        self.options = None
 
         for k, v in kwargs.items():
             if k == 'state':
@@ -115,25 +118,26 @@ class Resource:
             print(e)
 
         # parameters - all parameters MUST match
-        if (bool(other.GET) != bool(getattr(self, 'parameters', None))):
-            self._eq_failure = 'P01'
-            return False
-
-        for key, value in other.GET.lists():
-            try:
-                if value != self.parameters[key]:
-                    self._eq_failure = 'P02'
-                    return False
-            except KeyError:
-                self._eq_failure = 'P03'
+        if not self.options or not self.options.get('ignore-parameters', False):
+            if (bool(other.GET) != bool(getattr(self, 'parameters', None))):
+                self._eq_failure = 'P01'
                 return False
+
+            for key, value in other.GET.lists():
+                try:
+                    if value != self.parameters[key]:
+                        self._eq_failure = 'P02'
+                        return False
+                except KeyError:
+                    self._eq_failure = 'P03'
+                    return False
 
         # state - request state must be registered and match
         # states are not mutually exclusive, so check if config matches current
         # server state - else other state settings would trigger False
         try:
             for key in self.state:
-                if self.state[key] != settings.get_state(key):
+                if self.state[key] != get_state(key):
                     self._eq_failure = 'S01'
                     return False
         except AttributeError:
@@ -143,10 +147,11 @@ class Resource:
 
         # data
         if other.method.upper() in ('POST', 'PUT'):
-            if other.body.decode().replace('\n', '').strip() != \
-            getattr(self, 'body', '').replace('\n', '').strip():
-                self._eq_failure = 'D01'
-                return False
+            if not self.options or not self.options.get('ignore-body', False):
+                if other.body.decode().replace('\n', '').strip() != \
+                getattr(self, 'body', '').replace('\n', '').strip():
+                    self._eq_failure = 'D01'
+                    return False
 
         return True
 
@@ -175,7 +180,7 @@ class Response(Resource):
     def set_state(self):
         if getattr(self, 'state', None):
             for key in self.state:
-                settings.update_state(key, self.state[key])
+                update_state(key, self.state[key])
 
 
 class Repository:
@@ -189,7 +194,7 @@ class Repository:
         return self.__dict[key]
 
     def add(self, key, value):
-        key = f"/{key.strip('/')}/"
+        key = f"/{key.strip('/')}"
 
         if key not in self.__dict:
             self.__dict[key] = set()
@@ -206,7 +211,7 @@ class Repository:
                     return config.response
 
                 if self.__debug:
-                    print(f"'{file}': {config.request._eq_failure}")
+                    print(f"DEBUG: '{file}' - {config.request._eq_failure}")
 
         except KeyError:
             pass

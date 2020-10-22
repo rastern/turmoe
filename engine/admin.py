@@ -5,6 +5,7 @@ from django.urls import path
 from django.views import View
 from engine import models as engine_models
 from engine import settings as engine_settings
+from engine import state as engine_state
 
 
 
@@ -65,15 +66,15 @@ class StateModelAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-        engine_settings.load_state()
+        engine_state.load_state()
 
     def delete_queryset(self, request, queryset):
         super().delete_queryset(request, queryset)
-        engine_settings.load_state()
+        engine_state.load_state()
 
     def delete_model(self, request, obj):
         super().delete_model(request, obj)
-        engine_settings.load_state()
+        engine_state.load_state()
 
 
 

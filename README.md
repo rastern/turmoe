@@ -3,8 +3,7 @@
 ## Introduction
 
 Turmoe, the Turbonomic Mocking Engine, is designed to enabled complex integration
-test mocking representation of the Turbonomic API. Although targetted at the Turbonomic
-API, nothing prevents Turmoe from being used for other APIs.
+test mocking representation of the Turbonomic API. Although targetted at the Turbonomic API, nothing prevents Turmoe from being used for other APIs.
 
 ## Installation
 
