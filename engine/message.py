@@ -203,7 +203,7 @@ class Repository:
 
     def match(self, request):
         try:
-            for file in self.__dict[request.path]:
+            for file in self.__dict[request.path.rstrip('/')]:
                 config = ResourceConfig(file)
 
                 if config.request == request:

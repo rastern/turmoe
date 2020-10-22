@@ -3,7 +3,7 @@ import sys
 
 from django.urls import path
 from django.conf import settings as site_settings
-from django.urls import include, path
+from django.urls import include, path, re_path
 from engine import settings as engine_settings
 from engine import views as engine_views
 from engine.message import ResourceConfig
@@ -41,12 +41,8 @@ def urls():
                 engine_settings.MESSAGE_REPOSITORY.add(path_, file_path)
 
     for path_ in paths:
-        if path_[-1] == '/':
-            #path_ = path_[:-1]
-            path_ = path_.rstrip('/')
-
         verbose(f"Appending path: {path_}")
-        urls.append(path(path_, engine_views.MockResponseView.as_view()))
+        urls.append(re_path(f"{path_.rstrip('/')}/?", engine_views.MockResponseView.as_view()))
 
     if engine_settings.API_DYNAMIC_URLS and site_settings.DEBUG:
         import debug_toolbar
