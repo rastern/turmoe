@@ -17,6 +17,8 @@ def load_state():
 
 
 def get_state(name):
+    from engine.settings import API_STATE
+
     return API_STATE.get(name.lower(), None)
 
 
